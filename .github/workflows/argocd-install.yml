@@ -33,7 +33,8 @@ jobs:
           az aks get-credentials \
           --resource-group "${{ inputs.rg_name }}" \
           --name "${{ inputs.aks_name }}" \
-          --overwrite-existing
+          --overwrite-existing \
+          --admin
 
 
 
