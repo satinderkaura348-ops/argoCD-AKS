@@ -48,29 +48,38 @@ jobs:
       - name: Import existing RG
         working-directory: infra/bootstrap
         run: |
-          if az group show -n my_rg >/dev/null 2>&1; then
-            terraform import azurerm_resource_group.tfstate_rg /subscriptions/$ARM_SUBSCRIPTION_ID/resourceGroups/my_rg
+          set +e
+          exists=$(az group show -n my_rg 2>/dev/null)
+          if [ -n "$exists" ]; then
+            terraform import azurerm_resource_group.tfstate_rg /subscriptions/$ARM_SUBSCRIPTION_ID/resourceGroups/my_rg || true
           else
             echo "No existing RG"
           fi
 
+
       - name: Import existing Storage Account
         working-directory: infra/bootstrap
         run: |
-          if az storage account show -n tfstatestorage420 -g my_rg >/dev/null 2>&1; then
-            terraform import azurerm_storage_account.tfstatestorage420 /subscriptions/$ARM_SUBSCRIPTION_ID/resourceGroups/my_rg/providers/Microsoft.Storage/storageAccounts/tfstatestorage420
+          set +e
+          exists=$(az storage account show -n tfstatestorage420 -g my_rg 2>/dev/null)
+          if [ -n "$exists" ]; then
+            terraform import azurerm_storage_account.tfstatestorage420 /subscriptions/$ARM_SUBSCRIPTION_ID/resourceGroups/my_rg/providers/Microsoft.Storage/storageAccounts/tfstatestorage420 || true
           else
             echo "No existing storage account"
           fi
 
+
       - name: Import existing Storage Container
         working-directory: infra/bootstrap
         run: |
-          if az storage container exists --name terraform-state --account-name tfstatestorage420 | grep true; then
-            terraform import azurerm_storage_container.tfstate_container /subscriptions/$ARM_SUBSCRIPTION_ID/resourceGroups/my_rg/providers/Microsoft.Storage/storageAccounts/tfstatestorage420/blobServices/default/containers/terraform-state
+          set +e
+          exists=$(az storage container exists --name terraform-state --account-name tfstatestorage420 | jq -r .exists)
+          if [ "$exists" = "true" ]; then
+            terraform import azurerm_storage_container.tfstate_container /subscriptions/$ARM_SUBSCRIPTION_ID/resourceGroups/my_rg/providers/Microsoft.Storage/storageAccounts/tfstatestorage420/blobServices/default/containers/terraform-state || true
           else
             echo "No existing container"
           fi
+
 
         # --- APPLY BOOTSTRAP ---
       - name: Terraform Bootstrap Apply
