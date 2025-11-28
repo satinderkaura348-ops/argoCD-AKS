@@ -4,9 +4,14 @@ on:
   workflow_call:
     inputs:
       aks_name:
+        description: "Name of the AKS cluster"
         required: true
+        type: string
       rg_name:
+        description: "Name of the Resource Group"
         required: true
+        type: string
+
 
 jobs:
   argocd:
