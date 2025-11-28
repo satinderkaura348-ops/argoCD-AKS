@@ -91,15 +91,28 @@ jobs:
 
 
 
-      # --- CAPTURE OUTPUTS ---
+      # # --- CAPTURE OUTPUTS ---
+      # - name: Get Terraform Outputs
+      #   id: get_outputs
+      #   run: |
+      #       aks_name=$(terraform -chdir=infra/aks output -raw aks_name)
+      #       rg_name=$(terraform -chdir=infra/aks output -raw rg_name)
+      #       echo "aks_name=$aks_name" >> $GITHUB_OUTPUT
+      #       echo "rg_name=$rg_name" >> $GITHUB_OUTPUT
+
+
       - name: Get Terraform outputs
         id: tf
         shell: bash
         run: |
           aks_name=$(terraform -chdir=infra/aks output -raw aks_name | tr -d '\r')
           rg_name=$(terraform -chdir=infra/aks output -raw rg_name | tr -d '\r')
-    
-        
-          echo "aks_name=$aks_name" >> "$GITHUB_OUTPUT"
-          echo "rg_name=$rg_name" >> "$GITHUB_OUTPUT"
 
+          {
+            echo "aks_name<<EOF"
+            echo "$aks_name"
+            echo "EOF"
+            echo "rg_name<<EOF"
+            echo "$rg_name"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
