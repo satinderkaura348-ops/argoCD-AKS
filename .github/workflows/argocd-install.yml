@@ -31,10 +31,10 @@ jobs:
       - name: Remove preinstalled Azure CLI
         run: sudo apt-get remove -y azure-cli
 
-      - name: Install specific Azure CLI version
-        uses: azure/setup-azure-cli@v2
-        with:
-          version: 2.76.0
+      - name: Install Azure CLI 2.76.0
+        run: |
+          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+          sudo apt-get install -y azure-cli=2.76.0-1~noble
 
 
       
