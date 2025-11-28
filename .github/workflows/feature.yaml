@@ -9,11 +9,17 @@ jobs:
   infra:
     uses: ./.github/workflows/terraform.yml
     secrets: inherit
+    outputs:
+      aks_name: ${{ steps.get_outputs.outputs.aks_name }}
+      rg_name: ${{ steps.get_outputs.outputs.rg_name }}
 
   argocd:
     uses: ./.github/workflows/argocd-install.yml
     needs: infra
     secrets: inherit
+    with:
+      aks_name: ${{ needs.infra.outputs.aks_name }}
+      rg_name: ${{ needs.infra.outputs.rg_name }}
 
   test:
     uses: ./.github/workflows/test.yml
