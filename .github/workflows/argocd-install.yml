@@ -1,6 +1,12 @@
-name : Install argocd 
+name: Install ArgoCD
+
 on: 
   workflow_call:
+    inputs:
+      aks_name:
+        required: true
+      rg_name:
+        required: true
 
 jobs:
   argocd:
@@ -16,9 +22,11 @@ jobs:
       - name: Get AKS credentials
         run: |
           az aks get-credentials \
-            --resource-group ${{ needs.terraform.outputs.rg_name }} \
-            --name ${{ needs.terraform.outputs.aks_name }} \
-            --admin
+            --resource-group ${{ inputs.rg_name }} \
+            --name ${{ inputs.aks_name }} \
+            --admin \
+            --overwrite-existing
+
 
       - name: Set up Helm
         uses: azure/setup-helm@v3
