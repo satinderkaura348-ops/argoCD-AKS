@@ -39,25 +39,53 @@ jobs:
         with:
           terraform_version: 1.6.0
 
+      # --- INIT FIRST ---
+      - name: Terraform Init Bootstrap
+        working-directory: infra/bootstrap
+        run: terraform init -input=false
+
+        # --- IMPORT EXISTING RESOURCES ---
       - name: Import existing RG
-        run: |
-          az group show -n my_rg >/dev/null 2>&1 && \
-          terraform import -chdir=infra/bootstrap azurerm_resource_group.tfstate_rg /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/my_rg || echo "No existing RG"
-
-
-      # --- BOOTSTRAP ---
-      - name: Terraform Bootstrap
         working-directory: infra/bootstrap
         run: |
-          terraform init
-          terraform apply -auto-approve
-        
-      # --- AKS ---
-      - name: Terraform AKS
-        working-directory: infra/aks
+          if az group show -n my_rg >/dev/null 2>&1; then
+            terraform import azurerm_resource_group.tfstate_rg /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/my_rg
+          else
+            echo "No existing RG"
+          fi
+
+      - name: Import existing Storage Account
+        working-directory: infra/bootstrap
         run: |
-          terraform init
-          terraform apply -auto-approve
+          if az storage account show -n tfstatestorage420 -g my_rg >/dev/null 2>&1; then
+            terraform import azurerm_storage_account.tfstatestorage420 /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/my_rg/providers/Microsoft.Storage/storageAccounts/tfstatestorage420
+          else
+            echo "No existing storage account"
+          fi
+
+      - name: Import existing Storage Container
+        working-directory: infra/bootstrap
+        run: |
+          if az storage container exists --name terraform-state --account-name tfstatestorage420 | grep true; then
+            terraform import azurerm_storage_container.tfstate_container /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/my_rg/providers/Microsoft.Storage/storageAccounts/tfstatestorage420/blobServices/default/containers/terraform-state
+          else
+            echo "No existing container"
+          fi
+
+        # --- APPLY BOOTSTRAP ---
+      - name: Terraform Bootstrap Apply
+        working-directory: infra/bootstrap
+        run: terraform apply -auto-approve -input=false
+
+        # --- INIT & APPLY AKS ---
+      - name: Terraform Init AKS
+        working-directory: infra/aks
+        run: terraform init -reconfigure -input=false
+
+      - name: Terraform AKS Apply
+        working-directory: infra/aks
+        run: terraform apply -auto-approve -input=false
+
         
 
   
