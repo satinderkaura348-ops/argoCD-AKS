@@ -25,12 +25,13 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Get AKS credentials
+        shell: bash
         run: |
           az aks get-credentials \
-            --resource-group ${{ inputs.rg_name }} \
-            --name ${{ inputs.aks_name }} \
-            --admin \
-            --overwrite-existing
+          --resource-group "${{ inputs.rg_name }}" \
+          --name "${{ inputs.aks_name }}" \
+          --overwrite-existing
+
 
 
       - name: Set up Helm
