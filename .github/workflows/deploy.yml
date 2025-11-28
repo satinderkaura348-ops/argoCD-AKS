@@ -17,6 +17,9 @@ jobs:
           mkdir -p $HOME/.kube
           echo "${{ secrets.AKS_KUBECONFIG_B64 }}" | base64 --decode > $HOME/.kube/config
 
+      - name: Ensure petapp namespace exists
+        run: kubectl create namespace petapp || true
+
 
       - name: Sync ArgoCD App
         run: |
