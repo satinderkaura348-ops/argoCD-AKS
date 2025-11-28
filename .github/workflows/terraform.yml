@@ -39,6 +39,12 @@ jobs:
         with:
           terraform_version: 1.6.0
 
+      - name: Import existing RG
+        run: |
+          az group show -n my_rg >/dev/null 2>&1 && \
+          terraform import -chdir=infra/bootstrap azurerm_resource_group.tfstate_rg /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/my_rg || echo "No existing RG"
+
+
       # --- BOOTSTRAP ---
       - name: Terraform Bootstrap
         working-directory: infra/bootstrap
