@@ -49,4 +49,4 @@ jobs:
         run: kubectl rollout status deployment argocd-server -n argocd --timeout=180s
 
       - name: Apply ArgoCD Application
-        run: kubectl apply -f argocd/petapp-app.yaml
+        run: kubectl apply -f argocd/petapp-app.yml
