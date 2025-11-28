@@ -34,6 +34,7 @@ jobs:
           --resource-group "${{ inputs.rg_name }}" \
           --name "${{ inputs.aks_name }}" \
           --overwrite-existing \
+          --api-version 2025-04-01 \
           --admin
 
 
