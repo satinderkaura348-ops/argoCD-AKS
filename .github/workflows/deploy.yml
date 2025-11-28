@@ -12,6 +12,12 @@ jobs:
           chmod +x /usr/local/bin/argocd
           argocd version --client
 
+      - name: Set up kubeconfig
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.AKS_KUBECONFIG_B64 }}" | base64 --decode > $HOME/.kube/config
+
+
       - name: Sync ArgoCD App
         run: |
           EXTERNAL_IP=$(kubectl get svc -n argocd argocd-server -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
