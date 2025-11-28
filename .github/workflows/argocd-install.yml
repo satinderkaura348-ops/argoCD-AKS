@@ -28,13 +28,21 @@ jobs:
         run: az upgrade --yes
 
       
+      - name: Remove preinstalled Azure CLI
+        run: sudo apt-get remove -y azure-cli
+
+      - name: Install Azure CLI 2.80.0
+        run: |
+          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+          sudo apt-get install -y azure-cli=2.80.0-1~noble
+
+      
       - name: Get AKS credentials
         run: |
           az aks get-credentials \
           --resource-group "${{ inputs.rg_name }}" \
           --name "${{ inputs.aks_name }}" \
           --overwrite-existing \
-          --api-version 2025-04-01 \
           --admin
 
 
