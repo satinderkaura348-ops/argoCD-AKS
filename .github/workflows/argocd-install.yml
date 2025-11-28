@@ -26,6 +26,7 @@ jobs:
 
       - name: Set up kubeconfig
         run: |
+          mkdir -p $HOME/.kube
           echo "${{ secrets.AKS_KUBECONFIG_B64 }}" | base64 --decode > $HOME/.kube/config
 
 
