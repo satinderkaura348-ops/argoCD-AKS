@@ -63,7 +63,7 @@ jobs:
           set +e
           exists=$(az storage account show -n tfstatestorage420 -g my_rg 2>/dev/null)
           if [ -n "$exists" ]; then
-            terraform import azurerm_storage_account.tfstatestorage420 /subscriptions/$ARM_SUBSCRIPTION_ID/resourceGroups/my_rg/providers/Microsoft.Storage/storageAccounts/tfstatestorage420 || true
+            terraform import azurerm_storage_account.tfstate_sa /subscriptions/$ARM_SUBSCRIPTION_ID/resourceGroups/my_rg/providers/Microsoft.Storage/storageAccounts/tfstatestorage420 || true
           else
             echo "No existing storage account"
           fi
