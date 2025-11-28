@@ -24,27 +24,9 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      
-      - name: Remove preinstalled Azure CLI
-        run: sudo apt-get remove -y azure-cli
-
-      - name: Install Azure CLI 2.76.0
+      - name: Set up kubeconfig
         run: |
-          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-          sudo apt-get install -y --allow-downgrades azure-cli=2.76.0-1~noble
-
-      - name: Set runner date to 2024
-        run: sudo date -s "2024-12-31 12:00:00"
-
-      
-      - name: Get AKS credentials
-        run: |
-          az aks get-credentials \
-          --resource-group "${{ inputs.rg_name }}" \
-          --name "${{ inputs.aks_name }}" \
-          --overwrite-existing \
-          --admin
-
+          echo "${{ secrets.AKS_KUBECONFIG_B64 }}" | base64 --decode > $HOME/.kube/config
 
 
       - name: Set up Helm
