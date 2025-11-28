@@ -34,7 +34,7 @@ jobs:
       - name: Install Azure CLI 2.76.0
         run: |
           curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-          sudo apt-get install -y azure-cli=2.76.0-1~noble
+          sudo apt-get install -y --allow-downgrades azure-cli=2.76.0-1~noble
 
 
       
