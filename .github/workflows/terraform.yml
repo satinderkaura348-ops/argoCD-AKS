@@ -63,7 +63,7 @@ jobs:
           set +e
           exists=$(az storage account show -n tfstatestorage420 -g my_rg 2>/dev/null)
           if [ -n "$exists" ]; then
-            terraform import azurerm_storage_account.tfstate_sa /subscriptions/$ARM_SUBSCRIPTION_ID/resourceGroups/my_rg/providers/Microsoft.Storage/storageAccounts/tfstatestorage420 || true
+            terraform -chdir=infra/bootstrap import azurerm_storage_account.tfstate_sa /subscriptions/$ARM_SUBSCRIPTION_ID/resourceGroups/my_rg/providers/Microsoft.Storage/storageAccounts/tfstatestorage420 || true
           else
             echo "No existing storage account"
           fi
@@ -75,7 +75,7 @@ jobs:
           set +e
           exists=$(az storage container exists --name terraform-state --account-name tfstatestorage420 | jq -r .exists)
           if [ "$exists" = "true" ]; then
-            terraform import azurerm_storage_container.tfstate_container /subscriptions/$ARM_SUBSCRIPTION_ID/resourceGroups/my_rg/providers/Microsoft.Storage/storageAccounts/tfstatestorage420/blobServices/default/containers/terraform-state || true
+            terraform -chdir=infra/bootstrap import azurerm_storage_container.tfstate_container /subscriptions/$ARM_SUBSCRIPTION_ID/resourceGroups/my_rg/providers/Microsoft.Storage/storageAccounts/tfstatestorage420/blobServices/default/containers/terraform-state
           else
             echo "No existing container"
           fi
