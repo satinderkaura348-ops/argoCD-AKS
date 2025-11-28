@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/satinderkaura348-ops/argoCD-AKS/petapp.git'
+    repoURL: 'https://github.com/satinderkaura348-ops/argoCD-AKS/tree/dev/petapp'
     targetRevision: dev
     path: petapp
   destination:
