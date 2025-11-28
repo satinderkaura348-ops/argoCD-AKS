@@ -6,8 +6,8 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/satinderkaura348-ops/argoCD-AKS/petapp.git'
-    targetRevision: dev
+    repoURL: 'https://github.com/satinderkaura348-ops/argoCD-AKS.git'
+    targetRevision: main
     path: petapp
   destination:
     server: 'https://kubernetes.default.svc'

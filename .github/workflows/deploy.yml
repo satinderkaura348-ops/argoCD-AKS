@@ -6,10 +6,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Install ArgoCD CLI
+        run: |
+          curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+          chmod +x /usr/local/bin/argocd
+          argocd version --client
+
+      - name: Set up kubeconfig
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.AKS_KUBECONFIG_B64 }}" | base64 --decode > $HOME/.kube/config
+
+      - name: Ensure petapp namespace exists
+        run: kubectl create namespace petapp || true
+
+
       - name: Sync ArgoCD App
         run: |
-          argocd login argocd-server.argocd.svc.cluster.local \
+          EXTERNAL_IP=$(kubectl get svc -n argocd argocd-server -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+          argocd login $EXTERNAL_IP \
             --username admin \
             --password $(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d) \
-            --insecure
+            --insecure 
           argocd app sync petapp
