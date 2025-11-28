@@ -1,0 +1,55 @@
+name: Terraform Apply
+
+on:
+  workflow_call:
+    outputs:
+      aks_name:
+        description: "AKS cluster name"
+        value: ${{ jobs.terraform.outputs.aks_name }}
+      rg_name:
+        description: "Resource group"
+        value: ${{ jobs.terraform.outputs.rg_name }}
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    outputs:
+      aks_name: ${{ steps.get_outputs.outputs.aks_name }}
+      rg_name: ${{ steps.get_outputs.outputs.rg_name }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.6.0
+
+      # --- BOOTSTRAP ---
+      - name: Terraform Bootstrap
+        working-directory: infra/bootstrap
+        run: |
+          terraform init
+          terraform apply -auto-approve
+        
+      # --- AKS ---
+      - name: Terraform AKS
+        working-directory: infra/aks
+        run: |
+          terraform init
+          terraform apply -auto-approve
+        
+
+  
+      # --- CAPTURE OUTPUTS ---
+      - name: Get Terraform Outputs
+        id: get_outputs
+        run: |
+          echo "aks_name=$(terraform -chdir=infra/aks output -raw aks_name)" >> $GITHUB_OUTPUT
+          echo "rg_name=$(terraform -chdir=infra/aks output -raw rg_name)" >> $GITHUB_OUTPUT

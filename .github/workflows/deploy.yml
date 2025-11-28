@@ -1,0 +1,12 @@
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Sync ArgoCD App
+        run: |
+          argocd login argocd-server.argocd.svc.cluster.local \
+            --username admin \
+            --password $(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d) \
+            --insecure
+          argocd app sync petapp
