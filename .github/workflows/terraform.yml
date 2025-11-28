@@ -56,5 +56,7 @@ jobs:
       - name: Get Terraform Outputs
         id: get_outputs
         run: |
-          echo "aks_name=$(terraform -chdir=infra/aks output -raw aks_name)" >> $GITHUB_OUTPUT
-          echo "rg_name=$(terraform -chdir=infra/aks output -raw rg_name)" >> $GITHUB_OUTPUT
+          aks_name=$(terraform -chdir=infra/aks output -raw aks_name | tr -d '\n')
+          rg_name=$(terraform -chdir=infra/aks output -raw rg_name | tr -d '\n')
+          echo "aks_name=$aks_name" >> $GITHUB_OUTPUT
+          echo "rg_name=$rg_name" >> $GITHUB_OUTPUT
