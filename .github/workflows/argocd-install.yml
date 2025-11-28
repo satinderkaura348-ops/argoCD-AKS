@@ -31,8 +31,8 @@ jobs:
       - name: Get AKS credentials
         run: |
           az aks get-credentials \
-          --resource-group "${{ steps.tf.outputs.rg_name }}" \
-          --name "${{ steps.tf.outputs.aks_name }}" \
+          --resource-group "${{ inputs.rg_name }}" \
+          --name "${{ inputs.aks_name }}" \
           --overwrite-existing
 
 
