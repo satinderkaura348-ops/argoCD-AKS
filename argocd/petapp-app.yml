@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: 'https://github.com/satinderkaura348-ops/argoCD-AKS.git'
-    targetRevision: dev
+    targetRevision: main
     path: petapp
   destination:
     server: 'https://kubernetes.default.svc'
