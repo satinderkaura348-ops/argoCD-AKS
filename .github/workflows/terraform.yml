@@ -78,10 +78,15 @@ jobs:
         working-directory: infra/aks
         run: terraform init
 
-      - name: Import AKS Cluster
+      - name: Check and Import AKS Cluster
         working-directory: infra/aks
-        run: terraform import azurerm_kubernetes_cluster.aks /subscriptions/$ARM_SUBSCRIPTION_ID/resourceGroups/my_rg/providers/Microsoft.ContainerService/managedClusters/my-aks-cluster
- 
+        run: |
+          if terraform state list | grep -q '^azurerm_kubernetes_cluster\.aks$'; then
+            echo "AKS cluster already in state. Removing..."
+            terraform state rm azurerm_kubernetes_cluster.aks
+          fi
+          echo "Importing AKS cluster..."
+          terraform import azurerm_kubernetes_cluster.aks /subscriptions/$ARM_SUBSCRIPTION_ID/resourceGroups/my_rg/providers/Microsoft.ContainerService/managedClusters/my-aks-cluster
       
 
 
