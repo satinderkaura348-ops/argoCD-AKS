@@ -66,5 +66,5 @@ jobs:
       - name: Apply ArgoCD Application
         run: kubectl apply -f argocd/petapp-app.yml
 
-      - name: Sync ArgoCD Application
-        run: argocd app sync petapp
+      # - name: Sync ArgoCD Application
+      #   run: argocd app sync petapp
