@@ -38,20 +38,50 @@ jobs:
         with:
           terraform_version: 1.6.0
 
-      # --- BOOTSTRAP ---
+
+      
+
+      # # --- BOOTSTRAP ---
+      # - name: Terraform Init Bootstrap
+      #   working-directory: infra/bootstrap
+      #   run: |
+      #     terraform init 
+      #     terraform apply -auto-approve
+
+      # # --- AKS ---
+      # - name: Terraform Init AKS
+      #   working-directory: infra/aks
+      #   run: |
+      #     terraform init 
+      #     terraform apply -auto-approve
+
+      
       - name: Terraform Init Bootstrap
         working-directory: infra/bootstrap
-        run: |
-          terraform init 
-          terraform apply -auto-approve
+        run: terraform init
+
+      - name: Import Resource Group
+        working-directory: infra/bootstrap
+        run: terraform import azurerm_resource_group.tfstate_rg /subscriptions/$ARM_SUBSCRIPTION_ID/resourceGroups/my_rg
+
+      - name: Import Storage Account
+        working-directory: infra/bootstrap
+        run: terraform import azurerm_storage_account.tfstate_sa /subscriptions/$ARM_SUBSCRIPTION_ID/resourceGroups/my_rg/providers/Microsoft.Storage/storageAccounts/tfstatestorage420
+
+      - name: Import Storage Container
+        working-directory: infra/bootstrap
+        run: terraform import azurerm_storage_container.tfstate_container /subscriptions/2fb1ed02-b334-4120-ae4c-1a350b02199a/resourceGroups/my_rg/providers/Microsoft.Storage/storageAccounts/tfstatestorage420/blobServices/default/containers/terraform-state
+
 
       # --- AKS ---
       - name: Terraform Init AKS
         working-directory: infra/aks
-        run: |
-          terraform init 
-          terraform apply -auto-approve
+        run: terraform init
 
+      - name: Import AKS Cluster
+        working-directory: infra/aks
+        run: terraform import azurerm_kubernetes_cluster.aks /subscriptions/$ARM_SUBSCRIPTION_ID/resourceGroups/my_rg/providers/Microsoft.ContainerService/managedClusters/my-aks-cluster
+ 
       
 
 
@@ -60,7 +90,7 @@ jobs:
       - name: Get Terraform Outputs
         id: get_outputs
         run: |
-          aks_name=$(terraform -chdir=infra/aks output -raw aks_name | tr -d '\n')
-          rg_name=$(terraform -chdir=infra/aks output -raw rg_name | tr -d '\n')
-          echo "aks_name=$aks_name" >> $GITHUB_OUTPUT
-          echo "rg_name=$rg_name" >> $GITHUB_OUTPUT
+            aks_name=$(terraform -chdir=infra/aks output -raw aks_name)
+            rg_name=$(terraform -chdir=infra/aks output -raw rg_name)
+            echo "aks_name=$aks_name" >> $GITHUB_OUTPUT
+            echo "rg_name=$rg_name" >> $GITHUB_OUTPUT
