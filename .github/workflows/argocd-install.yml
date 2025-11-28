@@ -1,3 +1,7 @@
+name : Install argocd 
+on: 
+  workflow_call:
+
 jobs:
   argocd:
     runs-on: ubuntu-latest
