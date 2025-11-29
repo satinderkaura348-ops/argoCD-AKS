@@ -14,6 +14,7 @@ This repository automates provisioning an Azure Kubernetes Service (AKS) cluster
 - [Usage](#usage)
 - [Folder Structure](#folder-structure)
 - [Contributing](#contributing)
+- [License](#license)
 
 ## Project Overview
 
@@ -110,5 +111,8 @@ argocd-aks/
 Open for contributions: new apps, CI/CD improvements, or bug fixes. Submit PRs or raise issues.
 
 
+## License
+
+**MIT License**
 
 
