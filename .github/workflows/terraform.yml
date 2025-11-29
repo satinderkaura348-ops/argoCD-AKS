@@ -55,50 +55,6 @@ jobs:
           terraform init 
           terraform apply -auto-approve
 
-      
-      # - name: Terraform Init Bootstrap
-      #   working-directory: infra/bootstrap
-      #   run: terraform init
-
-      # - name: Import Resource Group
-      #   working-directory: infra/bootstrap
-      #   run: terraform import azurerm_resource_group.tfstate_rg /subscriptions/$ARM_SUBSCRIPTION_ID/resourceGroups/my_rg
-
-      # - name: Import Storage Account
-      #   working-directory: infra/bootstrap
-      #   run: terraform import azurerm_storage_account.tfstate_sa /subscriptions/$ARM_SUBSCRIPTION_ID/resourceGroups/my_rg/providers/Microsoft.Storage/storageAccounts/tfstatestorage420
-
-      # - name: Import Storage Container
-      #   working-directory: infra/bootstrap
-      #   run: terraform import azurerm_storage_container.tfstate_container /subscriptions/${{ secrets.AZURE_SUBSCRIPTION }}/resourceGroups/my_rg/providers/Microsoft.Storage/storageAccounts/tfstatestorage420/blobServices/default/containers/terraform-state
-
-
-      # # --- AKS ---
-      # - name: Terraform Init AKS
-      #   working-directory: infra/aks
-      #   run: terraform init
-
-      # - name: Check and Import AKS Cluster
-      #   working-directory: infra/aks
-      #   run: |
-      #     if terraform state list | grep -q '^azurerm_kubernetes_cluster\.aks$'; then
-      #       echo "AKS cluster already in state. Removing..."
-      #       terraform state rm azurerm_kubernetes_cluster.aks
-      #     fi
-      #     echo "Importing AKS cluster..."
-      #     terraform import azurerm_kubernetes_cluster.aks /subscriptions/$ARM_SUBSCRIPTION_ID/resourceGroups/my_rg/providers/Microsoft.ContainerService/managedClusters/my-aks-cluster
-      
-
-
-
-      # # --- CAPTURE OUTPUTS ---
-      # - name: Get Terraform Outputs
-      #   id: get_outputs
-      #   run: |
-      #       aks_name=$(terraform -chdir=infra/aks output -raw aks_name)
-      #       rg_name=$(terraform -chdir=infra/aks output -raw rg_name)
-      #       echo "aks_name=$aks_name" >> $GITHUB_OUTPUT
-      #       echo "rg_name=$rg_name" >> $GITHUB_OUTPUT
 
 
       - name: Get Terraform outputs
@@ -117,4 +73,5 @@ jobs:
             echo "EOF"
 
           } >> "$GITHUB_OUTPUT"
+
 
