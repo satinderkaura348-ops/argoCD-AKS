@@ -70,7 +70,7 @@ jobs:
 
       # - name: Import Storage Container
       #   working-directory: infra/bootstrap
-      #   run: terraform import azurerm_storage_container.tfstate_container /subscriptions/2fb1ed02-b334-4120-ae4c-1a350b02199a/resourceGroups/my_rg/providers/Microsoft.Storage/storageAccounts/tfstatestorage420/blobServices/default/containers/terraform-state
+      #   run: terraform import azurerm_storage_container.tfstate_container /subscriptions/${{ secrets.AZURE_SUBSCRIPTION }}/resourceGroups/my_rg/providers/Microsoft.Storage/storageAccounts/tfstatestorage420/blobServices/default/containers/terraform-state
 
 
       # # --- AKS ---
@@ -117,3 +117,4 @@ jobs:
             echo "EOF"
 
           } >> "$GITHUB_OUTPUT"
+
