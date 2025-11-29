@@ -30,6 +30,7 @@ Applications deployed:
 petapp (Docker image pulled from DockerHub)
 
 ## Architecture & Workflow
+```
           ┌─────────────────────┐
           │   Developer pushes  │
           │   code / manifests  │
@@ -48,9 +49,9 @@ petapp (Docker image pulled from DockerHub)
           │  PetApp deployed    │
           │  via ArgoCD         │
           └─────────────────────┘
+```
 
-
-Workflow Summary:
+** Workflow Summary: **
 
 Push changes to GitHub repository.
 
@@ -102,23 +103,16 @@ argocd app get petapp
 ```
 argocd-aks/
 ├── .github/workflows/       # GitHub Actions workflows
-
 ├── infra/                   # Terraform scripts for AKS provisioning
-
 ├── argocd/                  # ArgoCD application manifests
-
 │   └── petapp-app.yml       # ArgoCD app pointing to petapp manifests
-
 ├── petapp/                  # Kubernetes manifests for PetApp
-
 │   ├── deployment.yml
-
 │   ├── service.yml
-
 │   └── ingress.yml
-
 └── README.md
 ```
 ## Contributing
 
 Open for contributions: new apps, CI/CD improvements, or bug fixes. Submit PRs or raise issues.
+
