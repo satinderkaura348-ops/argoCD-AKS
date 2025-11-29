@@ -60,7 +60,7 @@ petapp (Docker image pulled from DockerHub)
 ## Prerequisites
 
 GitHub repository secrets:
-
+```
 AZURE_CLIENT_ID
 
 AZURE_CLIENT_SECRET
@@ -68,23 +68,22 @@ AZURE_CLIENT_SECRET
 AZURE_SUBSCRIPTION_ID
 
 AZURE_TENANT_ID
-
+```
 Optional: kubectl and argocd CLI for inspection.
 
 ## Usage
 
-Push changes to GitHub.
+**1. Push changes to GitHub.**
 
 Updates to Terraform scripts in infra/ will provision/update AKS.
-
 Updates to Kubernetes manifests in petapp/ will be deployed via ArgoCD.
 
-Monitor workflow:
+**2. Monitor workflow:**
 
 Go to GitHub → Actions → Select workflow → Check status.
 
-Inspect AKS Cluster & ArgoCD:
-
+**3. Inspect AKS Cluster & ArgoCD:**
+```
 # Connect to AKS (optional)
 az aks get-credentials --resource-group <rg_name> --name <aks_name>
 kubectl get nodes
@@ -92,7 +91,7 @@ kubectl get nodes
 # Check ArgoCD application
 argocd app list
 argocd app get petapp
-
+```
 ## Folder Structure
 ```
 argocd-aks/
@@ -109,6 +108,7 @@ argocd-aks/
 ## Contributing
 
 Open for contributions: new apps, CI/CD improvements, or bug fixes. Submit PRs or raise issues.
+
 
 
 
