@@ -51,17 +51,13 @@ petapp (Docker image pulled from DockerHub)
           └─────────────────────┘
 ```
 
-** Workflow Summary: **
+**Workflow Summary:**
 
-Push changes to GitHub repository.
-
-GitHub Actions triggers:
-
-Terraform provisions/updates the AKS cluster (infra/).
-
-ArgoCD deploys/updates petapp using manifests from the petapp/ folder.
-
-AKS cluster is up-to-date, PetApp is running automatically.
+1. Push changes to GitHub repository.
+2. GitHub Actions triggers:
+3. Terraform provisions/updates the AKS cluster (infra/).
+4. ArgoCD deploys/updates petapp using manifests from the petapp/ folder.
+5. AKS cluster is up-to-date, PetApp is running automatically.
 
 ## Prerequisites
 
@@ -115,4 +111,5 @@ argocd-aks/
 ## Contributing
 
 Open for contributions: new apps, CI/CD improvements, or bug fixes. Submit PRs or raise issues.
+
 
