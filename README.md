@@ -19,13 +19,11 @@ This repository automates provisioning an Azure Kubernetes Service (AKS) cluster
 
 This project demonstrates:
 
-Infrastructure as Code with Terraform for AKS provisioning.
+1. Infrastructure as Code with Terraform for AKS provisioning.
+2. GitOps deployment using ArgoCD.
+3. CI/CD automation via GitHub Actions, no manual deployment required.
 
-GitOps deployment using ArgoCD.
-
-CI/CD automation via GitHub Actions, no manual deployment required.
-
-Applications deployed:
+**Applications deployed:**
 
 petapp (Docker image pulled from DockerHub)
 
@@ -111,5 +109,6 @@ argocd-aks/
 ## Contributing
 
 Open for contributions: new apps, CI/CD improvements, or bug fixes. Submit PRs or raise issues.
+
 
 
