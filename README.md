@@ -1,6 +1,6 @@
 # argoCD-Helm
+<img width="1567" height="421" alt="argoCD" src="https://github.com/user-attachments/assets/5a6b52bd-cbad-4295-af54-40f9543b4dc4" />
 
-<img width="1115" height="555" alt="argoCD-aks" src="https://github.com/user-attachments/assets/537df8a8-ee68-46b0-b717-363dd03f1f99" />
 
 **AKS Deployment with ArgoCD via GitHub Actions**
 
@@ -114,5 +114,6 @@ Open for contributions: new apps, CI/CD improvements, or bug fixes. Submit PRs o
 ## License
 
 **MIT License**
+
 
 
